@@ -18,7 +18,7 @@ jobs:
         include:
           # 20.04 supports CUDA 11.0+
           - os: ubuntu-20.04
-            cuda: "11.3"
+            cuda: '11.5.1'
             gcc: 10
 
     env:
@@ -28,20 +28,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-
     - uses: Jimver/cuda-toolkit@v0.2.5
       id: cuda-toolkit
       with:
-        cuda: '11.5.1'
+        cuda: ${{ matrix.cuda }}
 
     - run: | 
         echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-    - run: | 
         echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
-        
-    - run: nvcc -V
+        nvcc -V
 
-    - name: Install/Select gcc and g++ 
+    - name: Install gcc and g++ 
       run: |
         sudo apt-get install -y gcc-${{ matrix.gcc }} g++-${{ matrix.gcc }}
         echo "CC=/usr/bin/gcc-${{ matrix.gcc }}" >> $GITHUB_ENV
@@ -67,9 +64,12 @@ jobs:
             echo "----"
           fi
 
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.7' 
+        architecture: 'x64' 
 
-
-    - name: Build everything else
+    - name: Build App
       working-directory: ${{ env.build_dir }}
       run: cmake --build . --target all --verbose -j `nproc`
 
