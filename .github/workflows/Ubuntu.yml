@@ -27,13 +27,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
     - uses: Jimver/cuda-toolkit@v0.2.5
       id: cuda-toolkit
       with:
         cuda: ${{ matrix.cuda }}
 
-    - run: | 
+    - name: Cuda Version and Paths
+      run: | 
         echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
         echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
         nvcc -V
@@ -69,7 +72,14 @@ jobs:
         python-version: '3.7' 
         architecture: 'x64' 
 
+    - name: Install libs
+    - run: |
+          apt-get install python3-dev
+
     - name: Build App
       working-directory: ${{ env.build_dir }}
       run: cmake --build . --target all --verbose -j `nproc`
 
+    - name: Build Python Package
+      run: |
+        pip install ./ -v
