@@ -72,10 +72,6 @@ jobs:
         python-version: '3.7' 
         architecture: 'x64' 
 
-    - name: Install libs
-      run: |
-          apt-get install python3-dev
-
     - name: Build App
       working-directory: ${{ env.build_dir }}
       run: cmake --build . --target all --verbose -j `nproc`
