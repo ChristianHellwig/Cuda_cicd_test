@@ -1,2 +1,5 @@
 import cmake_python as t
-print(t.addx(1,2))
+import pytest
+
+def test_addition():
+    assert t.addx(1,2) == 3
