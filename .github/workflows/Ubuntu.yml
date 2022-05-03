@@ -89,4 +89,5 @@ jobs:
 
     - name: Build Python Wheel
       run: |
+        pip install wheel
         python setup.py bdist_wheel
