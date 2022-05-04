@@ -94,13 +94,17 @@ jobs:
         CIBW_ARCHS: native
         CIBW_BUILD: cp37-*
     
-    - name: Install build
+    - name: Install build Linux
       if: runner.os == 'Linux'
-      run: pip install wheelhouse/cmake_python-0.0.1-cp37-cp37m-linux_x86_64.whl
+      run: |
+        ls
+        ls wheelhouse
+        ls ..
+        pip install ./wheelhouse/cmake_python-0.0.1-cp37-cp37m-linux_x86_64.whl
 
-    - name: Install build
+    - name: Install build Windows
       if: runner.os == 'Windows'
-      run: pip install wheelhouse/cmake_python-0.0.1-cp37-cp37m-win_amd64.whl
+      run: pip install ./wheelhouse/cmake_python-0.0.1-cp37-cp37m-win_amd64.whl
     # - name: Build Python Package
     #   run: |
     #     pip install ./ -v
