@@ -12,3 +12,4 @@ CTestTestfile.cmake
 _deps
 dist/
 cmake_python.egg-info/
+wheelhouse/

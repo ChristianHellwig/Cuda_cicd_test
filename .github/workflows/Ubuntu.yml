@@ -97,14 +97,14 @@ jobs:
     - name: Install build Linux
       if: runner.os == 'Linux'
       run: |
-        ls
-        ls wheelhouse
-        ls ..
-        pip install ./wheelhouse/cmake_python-0.0.1-cp37-cp37m-linux_x86_64.whl
+        wheelfile=$(find ./wheelhouse/ -type f -iname "*cp37m-manylinux*.whl") 
+        pip install $wheelfile
 
     - name: Install build Windows
       if: runner.os == 'Windows'
-      run: pip install ./wheelhouse/cmake_python-0.0.1-cp37-cp37m-win_amd64.whl
+      run: |
+        $wheelfile = Get-ChildItem .\wheelhouse\ | Where-Object { $_.Name -match '.*cp37m-win_amd64.*' } | select -expand Name
+        pip install ./wheelhouse/$wheelfile
     # - name: Build Python Package
     #   run: |
     #     pip install ./ -v
