@@ -84,22 +84,26 @@ jobs:
         python-version: '3.7' 
         architecture: 'x64' 
 
-    - name: Build App
-      working-directory: ${{ env.build_dir }}
-      run: cmake --build . --target all --verbose -j `nproc`
+    # - name: Build App
+    #   working-directory: ${{ env.build_dir }}
+    #   run: cmake --build . --target all --verbose -j `nproc`
 
-    - name: Build Python Package
-      run: |
-        pip install ./ -v
+    - name: Build wheels
+      uses: pypa/cibuildwheel@v2.4.0
+      
 
-    - name: Install Python Test Environment
-      run: python -m pip install pytest
+    # - name: Build Python Package
+    #   run: |
+    #     pip install ./ -v
 
-    - name: Run Python Test
-      run: |
-        python -m pytest test/test.py
+    # - name: Install Python Test Environment
+    #   run: python -m pip install pytest
 
-    - name: Build Python Wheel
-      run: |
-        pip install wheel
-        python setup.py bdist_wheel
+    # - name: Run Python Test
+    #   run: |
+    #     python -m pytest test/test.py
+
+    # - name: Build Python Wheel
+    #   run: |
+    #     pip install wheel
+    #     python setup.py bdist_wheel
