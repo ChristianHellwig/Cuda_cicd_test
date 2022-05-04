@@ -109,8 +109,8 @@ jobs:
     #   run: |
     #     pip install ./ -v
 
-    # - name: Install Python Test Environment
-    #   run: python -m pip install pytest
+    - name: Install Python Test Environment
+      run: python -m pip install pytest
 
     - name: Run Python Test
       run: |
