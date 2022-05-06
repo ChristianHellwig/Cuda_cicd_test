@@ -8,6 +8,10 @@ int addx(int i, int j) {
     return add(i, j);
 }
 
+int addxCuda(int i, int j) {
+    return addCuda(i, j);
+}
+
 namespace py = pybind11;
 
 PYBIND11_MODULE(cmake_python, m) {
@@ -25,6 +29,12 @@ PYBIND11_MODULE(cmake_python, m) {
     )pbdoc";
 
     m.def("addx", &addx, R"pbdoc(
+        Add two numbers
+
+        Some other explanation about the add function.
+    )pbdoc");
+
+    m.def("addx_cuda", &addxCuda, R"pbdoc(
         Add two numbers
 
         Some other explanation about the add function.
