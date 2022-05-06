@@ -1,0 +1,7 @@
+.git/
+.github/
+.vscode/
+dist/
+build/
+cmake_python.egg-info/
+wheelhouse/
