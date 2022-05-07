@@ -190,11 +190,15 @@ export CUDA_PATH=${CUDA_PATH}
 export PATH="$CUDA_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
-
+export CUDACXX=""
 
 echo "export CUDA_PATH=$CUDA_PATH" >> ~/.bashrc
 echo "export PATH=$PATH" >> ~/.bashrc
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> ~/.bashrc
+echo "export CMAKE_CUDA_COMPILER=$CUDA_PATH/bin/nvcc" >> ~/.bashrc
+echo "export CC=/usr/bin/gcc" >> ~/.bashrc
+echo "export CXX=/usr/bin/g++" >> ~/.bashrc
+echo "export CUDAHOSTCXX=/usr/bin/g++" >> ~/.bashrc
 
 
 # Check nvcc is now available.

@@ -41,7 +41,7 @@ RUN . ~/.bashrc
 
 # RUN echo $PATH
 # # Check nvcc version
-# RUN nvcc --version
+RUN nvcc --version
 
 # COPY . / $HOME/src/
 # WORKDIR $HOME/src/ 
