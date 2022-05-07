@@ -16,10 +16,10 @@ jobs:
       matrix:
         include:
           - os: ubuntu-20.04
-            cuda: '11.3'
+            cuda: '11.3.0'
             built_tool_version: 10 #GCC Version
           - os: windows-2019
-            cuda: '11.3'
+            cuda: '11.3.0'
             built_tool_version: 'Visual Studio 16 2019'
 
     env:
@@ -66,7 +66,8 @@ jobs:
       env:
         CIBW_ARCHS: native
         CIBW_BUILD: cp37-*
-        CIBW_ENVIRONMENT: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' 
+        CIBW_ENVIRONMENT_LINUX: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH=$PATH:/usr/local/cuda-11.3/bin CMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc 
+        CIBW_ENVIRONMENT_WINDOWS: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}'
         CIBW_BEFORE_ALL_LINUX: scripts/install_build_environment_linux.sh; . ~/.bashrc
         CIBW_BEFORE_ALL_WINDOWS: powershell ./scripts/install_build_environment_windows.ps1
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
