@@ -160,6 +160,7 @@ fi
 ## -----------------
 
 # Install Requirements
+$USE_SUDO apt-get update
 $USE_SUDO apt-get install -y software-properties-common wget apt-transport-https ca-certificates
 
 

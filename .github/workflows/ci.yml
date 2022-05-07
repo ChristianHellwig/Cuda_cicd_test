@@ -68,7 +68,7 @@ jobs:
         CIBW_BUILD: cp37-*
         CIBW_ENVIRONMENT: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' 
         CIBW_BEFORE_ALL_LINUX: scripts/install_build_environment_linux.sh
-        CIBW_BEFORE_ALL_WINDOWS: powershell scripts/install_build_environment_windows.ps
+        CIBW_BEFORE_ALL_WINDOWS: powershell -noexit "& ""scripts/install_build_environment_windows.ps1"""
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
         CIBW_SKIP: pp* *-musllinux_*
     
