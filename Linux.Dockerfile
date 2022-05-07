@@ -24,11 +24,12 @@ ADD scripts /scripts
 RUN ls /scripts
 RUN chmod +x /scripts/install_build_environment_linux.sh
 RUN ./scripts/install_build_environment_linux.sh
+RUN . ~/.bashrc
 
-ENV CUDA_PATH="/usr/local/cuda-$cuda"
-ENV PATH="$CUDA_PATH/bin:/usr/bin/cmake:$PATH"
-ENV LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
-ENV LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
+# ENV CUDA_PATH="/usr/local/cuda-$cuda"
+# ENV PATH="$CUDA_PATH/bin:/usr/bin/cmake:$PATH"
+# ENV LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
+# ENV LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
 
 # RUN wget "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-10.3.0/gcc-10.3.0.tar.gz" 
 # RUN tar -xzf gcc-10.3.0.tar.gz
@@ -38,16 +39,16 @@ ENV LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
 
 # Install Test environement
 
-RUN echo $PATH
-# Check nvcc version
-RUN nvcc --version
+# RUN echo $PATH
+# # Check nvcc version
+# RUN nvcc --version
 
-COPY . / $HOME/src/
-WORKDIR $HOME/src/ 
-RUN mkdir build;
+# COPY . / $HOME/src/
+# WORKDIR $HOME/src/ 
+# RUN mkdir build;
 
-# Build and install the library
-RUN python3.7 -m pip install ./ -v
+# # Build and install the library
+# RUN python3.7 -m pip install ./ -v
 
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]

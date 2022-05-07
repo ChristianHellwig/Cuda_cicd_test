@@ -190,6 +190,13 @@ export CUDA_PATH=${CUDA_PATH}
 export PATH="$CUDA_PATH/bin:$PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
 export LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
+
+
+echo "export CUDA_PATH=$CUDA_PATH" >> ~/.bashrc
+echo "export PATH=$PATH" >> ~/.bashrc
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH" >> ~/.bashrc
+
+
 # Check nvcc is now available.
 nvcc -V
 
