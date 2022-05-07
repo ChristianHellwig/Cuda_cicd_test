@@ -1,17 +1,20 @@
 cmake_minimum_required(VERSION 3.21)
-project(cmake_python)
-
-add_subdirectory(extern/pybind11)
-pybind11_add_module(cmake_python src/main.cpp)
 
 
-
-
-# EXAMPLE_VERSION_INFO is defined by setup.py and passed into the C++ code as a
-# define (VERSION_INFO) here.
-target_compile_definitions(cmake_python
-                           PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
-
-target_link_libraries(cmake_python PRIVATE cmake_cpp)
-target_include_directories(cmake_python PUBLIC ../cpp/src)
-# include_directories("../cpp/src")
+option(INCLUDE_CUDA "Compile with CUDA compentents" OFF) #OFF by default
+if(INCLUDE_CUDA)
+    project(cmake_python_gpu)
+    add_subdirectory(extern/pybind11)
+    pybind11_add_module(cmake_python_gpu src/main.cpp)
+    target_compile_definitions(cmake_python_gpu PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
+    target_link_libraries(cmake_python_gpu PRIVATE cmake_cpp)
+    target_include_directories(cmake_python_gpu PUBLIC ../cpp/src)
+else()
+endif(INCLUDE_CUDA)
+    project(cmake_python_cpu)
+    add_subdirectory(extern/pybind11)
+    pybind11_add_module(cmake_python_cpu src/main.cpp)
+    target_compile_definitions(cmake_python_cpu PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
+    target_link_libraries(cmake_python_cpu PRIVATE cmake_cpp)
+    target_include_directories(cmake_python_cpu PUBLIC ../cpp/src)
+unset(INCLUDE_CUDA CACHE)

@@ -36,33 +36,47 @@ jobs:
         python-version: '3.7' 
         architecture: 'x64' 
 
-    - name: Build wheels
+    - name: Build wheel (CPU library)
       uses: pypa/cibuildwheel@v2.4.0
       env:
         CIBW_ARCHS: native
         CIBW_BUILD: cp37-*
-        CIBW_ENVIRONMENT_LINUX: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH=$PATH:/usr/local/cuda-11.3/bin CMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc 
-        CIBW_ENVIRONMENT_WINDOWS: cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}'
+        CIBW_ENVIRONMENT_LINUX: INCLUDE_CUDA='OFF' cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH=$PATH:/usr/local/cuda-11.3/bin CMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc 
+        CIBW_ENVIRONMENT_WINDOWS: INCLUDE_CUDA='OFF' cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH="C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.3\\bin;$PATH"
         CIBW_BEFORE_ALL_LINUX: scripts/install_build_environment_linux.sh; . ~/.bashrc
         CIBW_BEFORE_ALL_WINDOWS: powershell ./scripts/install_build_environment_windows.ps1
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
         CIBW_SKIP: pp* *-musllinux_*
     
+    - name: Build wheel (GPU library)
+      uses: pypa/cibuildwheel@v2.4.0
+      env:
+        CIBW_ARCHS: native
+        CIBW_BUILD: cp37-*
+        CIBW_ENVIRONMENT_LINUX: INCLUDE_CUDA='ON' cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH=$PATH:/usr/local/cuda-11.3/bin CMAKE_CUDA_COMPILER=/usr/local/cuda-11.3/bin/nvcc 
+        CIBW_ENVIRONMENT_WINDOWS: INCLUDE_CUDA='ON' cuda='${{ matrix.cuda }}' built_tool_version='${{ matrix.built_tool_version }}' PATH="C:\\Program Files\\NVIDIA GPU Computing Toolkit\\CUDA\\v11.3\\bin;$PATH"
+        CIBW_BEFORE_ALL_LINUX: scripts/install_build_environment_linux.sh; . ~/.bashrc
+        CIBW_BEFORE_ALL_WINDOWS: powershell ./scripts/install_build_environment_windows.ps1
+        CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_24
+        CIBW_SKIP: pp* *-musllinux_*
+
     - name: Install build Linux
       if: runner.os == 'Linux'
       run: |
-        wheelfile=$(find ./wheelhouse/ -type f -iname "*cp37m-manylinux*.whl") 
+        wheelfile=$(find ./wheelhouse/ -type f -iname "*cpu*cp37m-manylinux*.whl") 
         pip install $wheelfile
 
     - name: Install build Windows
       if: runner.os == 'Windows'
       run: |
-        $wheelfile = Get-ChildItem .\wheelhouse\ | Where-Object { $_.Name -match '.*cp37m-win_amd64.*' } | select -expand Name
+        $wheelfile = Get-ChildItem .\wheelhouse\ | Where-Object { $_.Name -match '.*cpu.*cp37m-win_amd64.*' } | select -expand Name
         pip install ./wheelhouse/$wheelfile
 
     - name: Install Python Test Environment
       run: python -m pip install pytest
 
-    # - name: Run Python Test
-    #   run: |
-    #     python -m pytest test/test.py
+    - name: Run Python Test (CPU Only)
+      run: |
+        python -m pytest test/test.py
+      
+

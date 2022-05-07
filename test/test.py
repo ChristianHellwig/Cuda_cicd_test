@@ -1,4 +1,4 @@
-import cmake_python as t
+import cmake_python_cpu as t
 import pytest
 
 def test_addition():

@@ -41,6 +41,16 @@ class CMakeBuild(build_ext):
         # Can be set with Conda-Build, for example.
         cmake_generator = os.environ.get("CMAKE_GENERATOR", "")
 
+        compile_with_cuda = os.environ.get("INCLUDE_CUDA")
+        if (compile_with_cuda == None):
+            print("Environment variable INCLUDE_CUDA not found. Going to compile without cuda.")
+            compile_with_cuda = "OFF"
+        elif (compile_with_cuda != "OFF" and compile_with_cuda != "ON"):
+            print(f"Environment variable INCLUDE_CUDA has invalid value {compile_with_cuda} (Allowed: NO/YES). Going to compile without cuda.")
+            compile_with_cuda = "OFF"
+        elif compile_with_cuda == "ON":
+            print("Build with cuda")
+
         # Set Python_EXECUTABLE instead if you use PYBIND11_FINDPYTHON
         # EXAMPLE_VERSION_INFO shows you how to pass a value into the C++ code
         # from Python.
@@ -48,6 +58,7 @@ class CMakeBuild(build_ext):
             f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={extdir}",
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm
+            f"-DINCLUDE_CUDA={compile_with_cuda}"
         ]
         build_args = []
         # Adding CMake arguments set as environment variable
@@ -119,14 +130,16 @@ class CMakeBuild(build_ext):
 
 # The information here can also be placed in setup.cfg - better separation of
 # logic and declaration, and simpler if you include description/version in a file.
+
+package_name = name="cmake_python_gpu" if os.environ.get("INCLUDE_CUDA") == "ON" else "cmake_python_cpu"
 setup(
-    name="cmake_python",
+    name=package_name,
     version="0.0.1",
     author="Dean Moldovan",
     author_email="dean0x7d@gmail.com",
     description="A test project using pybind11 and CMake",
     long_description="",
-    ext_modules=[CMakeExtension("cmake_python")],
+    ext_modules=[CMakeExtension(package_name)],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,
     extras_require={"test": ["pytest>=6.0"]},

@@ -5,3 +5,4 @@ dist/
 build/
 cmake_python.egg-info/
 wheelhouse/
+CMakeCache.txt 

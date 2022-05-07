@@ -14,7 +14,12 @@ int addxCuda(int i, int j) {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(cmake_python, m) {
+#if defined(INCLUDE_CUDA)
+    PYBIND11_MODULE(cmake_python_gpu, m) 
+#else
+    PYBIND11_MODULE(cmake_python_cpu, m) 
+#endif
+{
     m.doc() = R"pbdoc(
         Pybind11 example plugin
         -----------------------

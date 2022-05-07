@@ -26,10 +26,10 @@ RUN chmod +x /scripts/install_build_environment_linux.sh
 RUN ./scripts/install_build_environment_linux.sh
 RUN . ~/.bashrc
 
-# ENV CUDA_PATH="/usr/local/cuda-$cuda"
-# ENV PATH="$CUDA_PATH/bin:/usr/bin/cmake:$PATH"
-# ENV LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
-# ENV LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
+ENV CUDA_PATH="/usr/local/cuda-$cuda"
+ENV PATH="$CUDA_PATH/bin:/usr/bin/cmake:$PATH"
+ENV LD_LIBRARY_PATH="$CUDA_PATH/lib:$LD_LIBRARY_PATH"
+ENV LD_LIBRARY_PATH="$CUDA_PATH/lib64:$LD_LIBRARY_PATH"
 
 # RUN wget "http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-10.3.0/gcc-10.3.0.tar.gz" 
 # RUN tar -xzf gcc-10.3.0.tar.gz
@@ -43,13 +43,15 @@ RUN . ~/.bashrc
 # # Check nvcc version
 RUN nvcc --version
 
-# COPY . / $HOME/src/
-# WORKDIR $HOME/src/ 
+COPY . / $HOME/src/
+WORKDIR $HOME/src/ 
 # RUN mkdir build;
 
 # # Build and install the library
-# RUN python3.7 -m pip install ./ -v
+ENV INCLUDE_CUDA=OFF
+RUN python3.7 -m pip install ./ -v
 
+RUN python3.7 -m pytest test/test.py
 
 ENTRYPOINT ["tail", "-f", "/dev/null"]
 # ENTRYPOINT echo "Hello world"
