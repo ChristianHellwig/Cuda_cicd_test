@@ -48,7 +48,7 @@ WORKDIR $HOME/src/
 # RUN mkdir build;
 
 # # Build and install the library
-ENV INCLUDE_CUDA=OFF
+ENV INCLUDE_CUDA=ON
 RUN python3.7 -m pip install ./ -v
 
 RUN python3.7 -m pytest test/test.py

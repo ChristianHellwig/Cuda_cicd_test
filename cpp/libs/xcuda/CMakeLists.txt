@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
-project(cmake_cuda LANGUAGES CXX CUDA)
+project(cmake_cuda LANGUAGES CUDA CXX)
+find_package(CUDAToolkit)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -pedantic")
@@ -16,3 +17,4 @@ set_target_properties(cmake_cuda PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON POSIT
 
 # Include directories
 target_include_directories(cmake_cuda PUBLIC src)
+target_link_libraries(cmake_cuda PUBLIC CUDA::cudart)
