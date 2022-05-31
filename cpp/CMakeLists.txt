@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.21)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -21,7 +21,6 @@ add_library(cmake_cpp STATIC ${SOURCE_FILES})
 # target_link_libraries(cmake_cpp PUBLIC cmake_cuda)
 set_target_properties(cmake_cpp PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
-
 # Include directories
 option(INCLUDE_CUDA "Compile with CUDA compentents" OFF) #OFF by default
 if(INCLUDE_CUDA)
@@ -29,8 +28,24 @@ if(INCLUDE_CUDA)
      ADD_DEFINITIONS(-DINCLUDE_CUDA)
      target_link_libraries(cmake_cpp PUBLIC cmake_cuda)
      target_include_directories(cmake_cpp PUBLIC src libs/xcuda/src)
+     set_target_properties(cmake_cpp PROPERTIES CUDA_ARCHITECTURES "75")
 else()
      message("CMAKE: INCLUDE_CUDA not set. CUDA will not be included")
      target_include_directories(cmake_cpp PUBLIC src)
 endif(INCLUDE_CUDA)
 unset(INCLUDE_CUDA CACHE)
+
+
+
+# Tests
+file(GLOB SOURCE_FILES_TEST
+        "tests/*.cpp"
+)
+
+add_executable(cmake_cpp_test ${SOURCE_FILES_TEST})
+target_link_libraries(cmake_cpp_test PRIVATE cmake_cpp)
+target_include_directories(cmake_cpp_test PRIVATE
+        src
+        tests
+        extern
+)

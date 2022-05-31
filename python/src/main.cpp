@@ -4,6 +4,8 @@
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
+namespace py = pybind11;
+
 int addx(int i, int j) {
     return add(i, j);
 }
@@ -12,7 +14,6 @@ int addxCuda(int i, int j) {
     return addCuda(i, j);
 }
 
-namespace py = pybind11;
 
 #if defined(INCLUDE_CUDA)
     PYBIND11_MODULE(cmake_python_gpu, m) 

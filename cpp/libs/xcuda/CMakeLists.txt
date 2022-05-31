@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.21)
 project(cmake_cuda LANGUAGES CUDA CXX)
 find_package(CUDAToolkit)
 
@@ -13,7 +13,7 @@ file(GLOB SOURCE_FILES
 )
 
 add_library(cmake_cuda STATIC "${SOURCE_FILES}")
-set_target_properties(cmake_cuda PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON POSITION_INDEPENDENT_CODE TRUE CUDA_ARCHITECTURES "72")
+set_target_properties(cmake_cuda PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON POSITION_INDEPENDENT_CODE TRUE CUDA_ARCHITECTURES "75")
 
 # Include directories
 target_include_directories(cmake_cuda PUBLIC src)

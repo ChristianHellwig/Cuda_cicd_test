@@ -13,3 +13,4 @@ _deps
 dist/
 cmake_python.egg-info/
 wheelhouse/
+**/.vs/
